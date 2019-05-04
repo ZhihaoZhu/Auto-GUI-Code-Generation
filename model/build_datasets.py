@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 from __future__ import print_function
 from __future__ import absolute_import
-__author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 import os
 import sys
 import hashlib
 import shutil
+import numpy as np
 
 from classes.Sampler import *
+
+
 
 argv = sys.argv[1:]
 
@@ -19,7 +21,7 @@ if len(argv) < 1:
 else:
     input_path = argv[0]
 
-distribution = 6 if len(argv) < 2 else argv[1]
+distribution = 6 if len(argv) < 2 else argv[1]      # With how many portions the datasets are divided
 
 TRAINING_SET_NAME = "training_set"
 EVALUATION_SET_NAME = "eval_set"
@@ -34,12 +36,14 @@ for f in os.listdir(input_path):
             path_img = "{}/{}.png".format(input_path, file_name)
             paths.append(file_name)
 
+## Divide the datasets into training and validation
 evaluation_samples_number = len(paths) / (distribution + 1)
 training_samples_number = evaluation_samples_number * distribution
 
 assert training_samples_number + evaluation_samples_number == len(paths)
 
-print("Splitting datasets, training samples: {}, evaluation samples: {}".format(training_samples_number, evaluation_samples_number))
+print("Splitting datasets, training samples: {}, evaluation samples: {}".format(
+    training_samples_number, evaluation_samples_number))
 
 np.random.shuffle(paths)
 
@@ -86,12 +90,16 @@ if not os.path.exists("{}/{}".format(os.path.dirname(input_path), TRAINING_SET_N
     os.makedirs("{}/{}".format(os.path.dirname(input_path), TRAINING_SET_NAME))
 
 for path in eval_set:
-    shutil.copyfile("{}/{}.png".format(input_path, path), "{}/{}/{}.png".format(os.path.dirname(input_path), EVALUATION_SET_NAME, path))
-    shutil.copyfile("{}/{}.gui".format(input_path, path), "{}/{}/{}.gui".format(os.path.dirname(input_path), EVALUATION_SET_NAME, path))
+    shutil.copyfile("{}/{}.png".format(input_path, path), "{}/{}/{}.png".format(os.path.dirname(input_path),
+                                                                                EVALUATION_SET_NAME, path))
+    shutil.copyfile("{}/{}.gui".format(input_path, path), "{}/{}/{}.gui".format(os.path.dirname(input_path),
+                                                                                EVALUATION_SET_NAME, path))
 
 for path in train_set:
-    shutil.copyfile("{}/{}.png".format(input_path, path), "{}/{}/{}.png".format(os.path.dirname(input_path), TRAINING_SET_NAME, path))
-    shutil.copyfile("{}/{}.gui".format(input_path, path), "{}/{}/{}.gui".format(os.path.dirname(input_path), TRAINING_SET_NAME, path))
+    shutil.copyfile("{}/{}.png".format(input_path, path), "{}/{}/{}.png".format(os.path.dirname(input_path),
+                                                                                TRAINING_SET_NAME, path))
+    shutil.copyfile("{}/{}.gui".format(input_path, path), "{}/{}/{}.gui".format(os.path.dirname(input_path),
+                                                                                TRAINING_SET_NAME, path))
 
 print("Training dataset: {}/training_set".format(os.path.dirname(input_path), path))
 print("Evaluation dataset: {}/eval_set".format(os.path.dirname(input_path), path))
