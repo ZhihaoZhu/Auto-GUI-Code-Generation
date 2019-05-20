@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c556d615-370d-474c-a536-5ca1837e6880" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/model/Extract_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/Extract_features.py" afterDir="false" />
-    </list>
+    <list default="true" id="c556d615-370d-474c-a536-5ca1837e6880" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +14,7 @@
         <entry file="file://$PROJECT_DIR$/model/Extract_features.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
-              <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
               <folding>
                 <element signature="e#0#64#0" expanded="true" />
               </folding>
@@ -71,8 +69,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="108" />
-    <option name="y" value="34" />
+    <option name="x" value="302" />
+    <option name="y" value="120" />
     <option name="width" value="1250" />
     <option name="height" value="877" />
   </component>
@@ -277,14 +275,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="108" y="34" width="1250" height="877" extended-state="1" />
+    <frame x="302" y="120" width="1250" height="877" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20829943" />
       <window_info id="Structure" order="1" weight="0.24979658" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32920793" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32866243" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32866243" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -408,7 +407,7 @@
     <entry file="file://$PROJECT_DIR$/model/Extract_features.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
           <folding>
             <element signature="e#0#64#0" expanded="true" />
           </folding>
