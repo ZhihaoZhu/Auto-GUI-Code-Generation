@@ -16,6 +16,7 @@ base_model = tf.keras.applications.ResNet50(input_shape=IMG_SHAPE,
                                                include_top=False,
                                                weights='imagenet')
 base_model.trainable = False
+print("yes")
 
 for dataset in ("train_data","val_data","test_data"):
     for f in os.listdir("../datasets/{}/{}".format(platform,dataset)):
