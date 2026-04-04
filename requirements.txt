@@ -1,8 +1,6 @@
-# Note: These are legacy versions from 2017-2018.
-# They require Python 3.6 and may not install on modern systems.
-Keras==2.1.2
-numpy==1.13.3
-opencv-python==3.3.0.10
-h5py==2.7.1
-tensorflow==1.7.0
-matplotlib==2.1.2
+torch>=2.0
+torchvision>=0.15
+numpy>=1.24
+opencv-python>=4.8
+Pillow>=10.0
+matplotlib>=3.7

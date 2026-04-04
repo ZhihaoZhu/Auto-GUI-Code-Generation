@@ -2,13 +2,13 @@
 
 Automatic GUI code generation for web, Android, and iOS, leveraging machine learning and template-based compilers. Based on the [pix2code](https://github.com/tonybeltramelli/pix2code) research by Tony Beltramelli.
 
-The pipeline is: **Screenshot Image --> ML Model --> DSL tokens --> Platform Compiler --> Native Code**
+The pipeline is: **Screenshot Image --> ResNet50 + Transformer --> DSL tokens --> Platform Compiler --> Native Code**
 
 ## Features
 
-- **Model-driven GUI understanding** via deep learning (ResNet50 feature extraction)
+- **ResNet50 encoder + Transformer decoder** for screenshot-to-DSL generation (PyTorch)
 - **Template-based code generation** for multiple platforms: Web (HTML/Bootstrap), Android (XML), iOS (Storyboard)
-- Data preprocessors for dataset handling and train/val/test splitting
+- PyTorch `Dataset` and `DataLoader` for efficient data loading and batching
 
 ## Directory Overview
 
@@ -19,29 +19,43 @@ compiler/               # Platform-specific code generators
   ├── web-compiler.py
   ├── assets/           # DSL-to-platform mapping JSON files
   └── classes/          # Compiler internals (Compiler, Node, Utils)
-model/                  # ML and data pre-processing
-  ├── Extract_features.py   # ResNet50 feature extraction
-  ├── data_process.py       # Dataset preprocessing and splitting
+model/                  # ML pipeline (PyTorch)
+  ├── dataset.py        # Pix2CodeDataset + Vocabulary + DataLoaders
+  ├── model.py          # Pix2CodeModel (ResNet50 encoder + Transformer decoder)
+  ├── train.py          # Training loop with validation and checkpointing
+  ├── generate.py       # Inference: screenshot -> .gui file
   └── classes/
-      ├── Utils.py          # Image preprocessing utilities
+      ├── Utils.py      # Image preprocessing with torchvision
       └── model/
-          └── Config.py     # Hyperparameter configuration
-requirements.txt        # Python dependencies (legacy, see note below)
+          └── Config.py # Hyperparameters (d_model, n_heads, etc.)
+tests/                  # Unit tests
+  ├── test_dataset.py
+  └── test_model.py
+requirements.txt        # Python dependencies
 ```
 
 ## Getting Started
 
 1. **Install dependencies:**
-
-   > **Note:** The dependencies in `requirements.txt` are pinned to legacy versions (TensorFlow 1.7, Keras 2.1, etc.) from 2017-2018. They require Python 3.6 and may not install on modern systems.
-
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **(Optional) Prepare dataset** according to `model/data_process.py` requirements. Datasets should be placed at `../datasets/<platform>/all_data/` relative to the `model/` directory.
+2. **Prepare dataset:** Place `.gui` + `.png` file pairs in a data directory (e.g., `datasets/web/all_data/`). Each `.gui` file contains DSL tokens and its matching `.png` is the corresponding screenshot.
 
-3. **Run the compilers** (must be run from the `compiler/` directory):
+3. **Train the model:**
+   ```bash
+   python -m model.train --data_dir datasets/web/all_data --epochs 10 --batch_size 64
+   ```
+   This saves the best checkpoint to `checkpoints/best_model.pt`.
+
+4. **Generate DSL from a screenshot:**
+   ```bash
+   python -m model.generate --image screenshot.png --checkpoint checkpoints/best_model.pt
+   ```
+   This outputs DSL code to stdout, or to a file with `--output output.gui`.
+
+5. **Compile DSL to platform code** (run from the `compiler/` directory):
    ```bash
    cd compiler
    python web-compiler.py <path_to_gui_file>
@@ -49,17 +63,34 @@ requirements.txt        # Python dependencies (legacy, see note below)
    python ios-compiler.py <path_to_gui_file>
    ```
 
-4. **Run data preprocessing:**
-   ```bash
-   cd model
-   python data_process.py
-   ```
+## Model Architecture
 
-## Known Limitations
+```
+Screenshot (256x256x3)
+    |
+    v
+ResNet50 (frozen, ImageNet pretrained) -> 8x8x2048 spatial features
+    |
+    v
+Linear projection -> 64 image tokens x 256 dims
+    |
+    v
+Transformer Decoder (3 layers, 8 heads, d_model=256)
+    |- Token Embedding + Sinusoidal Positional Encoding
+    |- Causal Self-Attention
+    |- Cross-Attention to image tokens
+    |- Feed-Forward
+    |
+    v
+Linear -> vocab_size logits -> next DSL token
+```
 
-- The ML model training pipeline is incomplete -- only data preprocessing and feature extraction are implemented. There is no training loop or inference script.
-- Feature extraction (`Extract_features.py`) uses TensorFlow 1.x APIs (`tf.enable_eager_execution()`) which are deprecated in TensorFlow 2.x.
-- The compilers use relative paths to load DSL mapping files from `assets/`, so they must be run from within the `compiler/` directory.
+## Running Tests
+
+```bash
+pip install pytest
+python -m pytest tests/ -v
+```
 
 ## License
 
