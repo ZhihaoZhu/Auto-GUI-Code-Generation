@@ -1,6 +1,6 @@
 # Auto-GUI-Code-Generation
 
-Automatic GUI code generation for web, Android, and iOS, leveraging machine learning and template-based compilers. Based on the [pix2code](https://github.com/tonybeltramelli/pix2code) research by Tony Beltramelli.
+Automatic GUI code generation for web, Android, and iOS, leveraging machine learning and template-based compilers.
 
 The pipeline is: **Screenshot Image --> ResNet50 + Transformer --> DSL tokens --> Platform Compiler --> Native Code**
 
