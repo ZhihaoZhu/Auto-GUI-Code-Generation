@@ -1,8 +1,10 @@
+"""Utility functions for image preprocessing and label encoding."""
 
 import numpy as np
 
 
 class Utils:
+    """Static utility methods for the ML model pipeline."""
     @staticmethod
     def sparsify(label_vector, output_size):
         sparse_vector = []

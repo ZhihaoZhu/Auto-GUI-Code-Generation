@@ -1,16 +1,18 @@
+"""Preprocess GUI screenshots and DSL files into train/val/test .npz datasets."""
+
 #!/usr/bin/env python
 
 import os
-import sys
 import numpy as np
 import cv2
 import shutil
 
-from model.classes.model.Config import *
+from model.classes.model.Config import IMAGE_SIZE
 
 
 ## Defined Functions
 def content_transform(string):
+    """Parse a DSL string into block-level and token-level token lists."""
     bl_token = []
     tl_token = []
     stack = 0
@@ -48,7 +50,7 @@ distribution = 6
 if not os.path.isdir("../datasets/{}/train_data".format(platform)):
     os.mkdir("../datasets/{}/train_data".format(platform))
 
-if not os.path.isdir("./datasets/{}/val_data".format(platform)):
+if not os.path.isdir("../datasets/{}/val_data".format(platform)):
     os.mkdir("../datasets/{}/val_data".format(platform))
 
 if not os.path.isdir("../datasets/{}/test_data".format(platform)):
@@ -73,7 +75,7 @@ for f in os.listdir("../datasets/{}/all_data".format(platform)):
 
         image_path = "../datasets/{}/all_data/{}.png".format(platform,file_name)
         img = cv2.imread(image_path)
-        img = cv2.resize(img, (256, 256))
+        img = cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
         img = img.astype('float32')
         img /= 255
 
@@ -90,8 +92,7 @@ train_data = path[2*val_size:]
 search_index = {0:"val_data", 1:"test_data", 2:"train_data"}
 
 ##-----------copy the data into corresponding folders-----------------##
-for index, set in enumerate([val_data, test_data, train_data]):
-    for file_name in set:
+for index, data_split in enumerate([val_data, test_data, train_data]):
+    for file_name in data_split:
         shutil.copyfile("../datasets/{}/all_data/{}.npz".format(platform, file_name),
                     "../datasets/{}/{}/{}.npz".format(platform, search_index[index], file_name))
-

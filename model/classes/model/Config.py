@@ -1,3 +1,5 @@
+"""Hyperparameter and configuration constants for the ML model."""
+
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 CONTEXT_LENGTH = 48

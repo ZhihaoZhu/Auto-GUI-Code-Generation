@@ -1,3 +1,5 @@
+"""Utility functions for generating random placeholder text and element IDs."""
+
 __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 
 import string
@@ -5,6 +7,7 @@ import random
 
 
 class Utils:
+    """Static utility methods for generating random content in compiled output."""
     @staticmethod
     def get_random_text(length_text=10, space_number=1, with_upper_case=True):
         results = []
@@ -18,7 +21,7 @@ class Utils:
         while len(current_spaces) < space_number:
             space_pos = random.randint(2, length_text - 3)
             if space_pos in current_spaces:
-                break
+                continue
             results[space_pos] = " "
             if with_upper_case:
                 results[space_pos + 1] = results[space_pos - 1].upper()
